@@ -1,0 +1,75 @@
+---
+title: "Week [X] – [Assignment Title Here]"
+author: "Michael Kamp"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output: 
+  word_document:
+    keep_md: true
+---
+# =========================================
+# Setup
+# =========================================
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+
+# Automatically set working directory to this file's location
+if (requireNamespace("rstudioapi", quietly = TRUE)) {
+  setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+}
+getwd()  # Confirm current directory
+
+# Load libraries
+library(ISLR2)
+library(MASS)
+library(tree)
+library(randomForest)
+library(gbm)
+library(caret)
+library(e1071)
+library(ggplot2)
+theme_set(theme_minimal(base_size = 13))
+## Introduction
+
+Provide a short overview of what this week’s assignment covers.
+(Example: “In this assignment, I analyze the Carseats data set using bagging and boosting to predict Sales.”)
+
+# Load data and inspect
+# Example placeholder — replace with dataset for this week
+data(Auto)
+summary(Auto)
+
+# Example training/test split
+set.seed(1)
+train <- sample(1:nrow(Auto), nrow(Auto)/2)
+Auto_train <- Auto[train, ]
+Auto_test  <- Auto[-train, ]
+
+# Example model
+glm_fit <- glm(mpg01 ~ horsepower + weight, data = Auto_train, family = binomial)
+summary(glm_fit)
+
+glm_pred <- ifelse(predict(glm_fit, Auto_test, type = "response") > 0.5, 1, 0)
+confusionMatrix(as.factor(glm_pred), as.factor(Auto_test$mpg01))
+Conclusion
+
+Summarize your findings and compare methods if applicable.
+(Example: “The boosted model achieved the highest accuracy on the test data, suggesting…”)
+
+References
+<div style="text-indent:-0.5in; margin-left:0.5in;">
+
+James, G., Witten, D., Hastie, T., & Tibshirani, R. (2021). An introduction to statistical learning: With applications in R (2nd ed.). Springer. https://www.statlearning.com/
+
+</div> <div style="text-indent:-0.5in; margin-left:0.5in;">
+
+Kuhn, M. (2024). caret: Classification and Regression Training (Version 6.0-94) [Computer software]. Comprehensive R Archive Network (CRAN). https://cran.r-project.org/package=caret
+
+</div> <div style="text-indent:-0.5in; margin-left:0.5in;">
+
+R Core Team. (2025). R: A language and environment for statistical computing (Version 4.5.1) [Computer software]. R Foundation for Statistical Computing. https://www.r-project.org/
+
+</div>
+Acknowledgment
+
+This assignment was completed by Michael Kamp for DATA 785.
+Assistance with code review, R Markdown structure, and formatting guidance
+was provided through OpenAI’s ChatGPT (GPT-5).
